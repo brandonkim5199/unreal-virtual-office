@@ -100,3 +100,18 @@ This project was conducted under the supervision of Professor Yu Chen at Bingham
 This video shows the process of adjusting joint-control parameters in Unreal Engine's Control Rig editor.
 
 [Watch the Control Rig Demonstration](docs/screenshots/avatar_control_rig_demo_preview.mp4)
+
+## Unreal Engine Implementation Files
+
+This repository includes selected Unreal Engine assets from my research contribution.
+
+- `unreal-assets/Characters/Mannequins/Rigs/CR_Mannequin_Body.uasset`: Control Rig asset containing the skeletal joint-control graph.
+- `unreal-assets/CR_Mannequin_Body_Take1.uasset`: Level Sequence asset associated with the Control Rig.
+
+The Control Rig uses configurable parameters for knee, thigh, ankle, spine, and pelvis manipulation.
+
+**Requirements and limitations:**
+- Developed using Unreal Engine 5.6.1.
+- These are selected implementation assets, not a standalone Unreal Engine project.
+- Opening or reproducing them may require additional skeleton, mesh, plugin, and project dependencies.
+- Third-party environment assets are not redistributed in this repository.
