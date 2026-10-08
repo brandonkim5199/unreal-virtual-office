@@ -1,0 +1,16 @@
+# Unreal Engine generated files
+Binaries/
+DerivedDataCache/
+Intermediate/
+Saved/
+
+# IDE and operating system files
+.vs/
+.vscode/
+.idea/
+.DS_Store
+*.swp
+
+# Python temporary files
+__pycache__/
+*.pyc
