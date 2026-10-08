@@ -95,3 +95,8 @@ The complete Unreal Engine project and any third-party assets are subject to res
 ## Acknowledgments
 
 This project was conducted under the supervision of Professor Yu Chen at Binghamton University as part of the Intelligent and Sustainable Edge Computing (I-SEC) research group.
+## Control Rig Demonstration Video
+
+This video shows the process of adjusting joint-control parameters in Unreal Engine's Control Rig editor.
+
+[Watch the Control Rig Demonstration](docs/screenshots/avatar_control_rig_demo_preview.mp4)
