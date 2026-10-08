@@ -1,90 +1,101 @@
-# Unreal Engine Virtual Workplace & Skeletal Avatar Framework
+# Virtual Workplace & Skeletal Avatar Control | Unreal Engine 5
 
-**Research Project | Binghamton University | January 2025 – August 2026**
+**An Unreal Engine research prototype for virtual workplace modeling and parameter-driven humanoid pose control.**
 
-**Role:** Undergraduate Research Assistant  
-**Research Advisor:** Prof. Yu Chen  
-**Engine:** Unreal Engine 5.6.1  
-**Technologies:** Unreal Engine, Blueprints, Control Rig, Skeletal Animation, 3D Environment Design
+**My role:** Research Assistant, Intelligent and Sustainable Edge Computing (I-SEC), Binghamton University  
+**Advisor:** Prof. Yu Chen  
+**Research period:** January 2025 – August 2026  
+**Engine used:** Unreal Engine 5.6.1  
+**Tools:** Unreal Engine, Blueprint visual scripting, Control Rig, skeletal meshes, 3D level editing
 
-## Project Overview
+![Virtual workplace with skeletal avatar](docs/screenshots/virtual_room.png)
 
-This project focused on developing a virtual workplace environment to support research on replay-attack detection using Environmental Network Frequency (ENF) fingerprints and virtual-physical synchronization.
+## The research goal
 
-My primary contribution was creating a virtual environment in Unreal Engine and implementing a controllable skeletal avatar framework. The environment was designed to provide a foundation for future integration of human detection and position tracking.
+The broader research investigates **replay-attack detection using environmental network frequency (ENF) fingerprints** and synchronization between physical and virtual workplaces. A usable virtual workplace needs a modeled space and a controllable representation of a person before future sensing, detection, and tracking components can be integrated.
 
-## My Contributions
+**My assignment was to build that Unreal Engine foundation:** a virtual room based on a real space, populated with environmental objects and a skeletal avatar whose body pose can be adjusted through parameters.
 
-### 1. Virtual Environment Development
+> **Scope clarification:** This repository documents the *virtual environment and avatar control work*. I did **not** implement the ENF replay-attack detection algorithm or YOLO-based human detection/tracking.
 
-- Recreated the layout of a real-world room in Unreal Engine, including walls, furniture, and interior objects.
-- Configured a 3D environment containing a skeletal humanoid avatar.
-- Organized environmental assets to support further development of the virtual workplace.
+## What I built
 
-![Virtual Room](docs/screenshots/virtual_room.png)
+### 1. Virtual room environment
 
-![Top-Down Room View](docs/screenshots/room_top_view.png)
+- Recreated a real-world room layout in Unreal Engine and arranged walls, furniture, and other scene objects.
+- Placed a humanoid skeletal avatar in the scene to provide a controllable human representation.
+- Prepared the scene as an initial environment for later virtual–physical synchronization research.
 
-### 2. Skeletal Avatar and Joint Control
+| Perspective view | Top-down view |
+|---|---|
+| ![Perspective of virtual room](docs/screenshots/virtual_room.png) | ![Top-down view of room](docs/screenshots/room_top_view.png) |
 
-Configured a humanoid skeletal avatar using Unreal Engine's Blueprint-based Control Rig system.
+### 2. Parameter-driven skeletal avatar controls
 
-Developed parameter-driven controls for individual body joints, including:
+I configured a **Control Rig graph** with editable parameters for body joints rather than depending only on fixed animation clips. The visible graph includes parameters for:
 
-- Left and right knee flexion
-- Left and right thigh rotation
-- Left and right ankle flexion
-- Spine bending
-- Vertical pelvis adjustment
+| Control parameter | Intended adjustment |
+|---|---|
+| `KneeL_Flex`, `KneeR_Flex` | Left and right knee flexion |
+| `ThighL_Flex`, `ThighR_Flex` | Left and right thigh rotation |
+| `AnkleL_Flex`, `AnkleR_Flex` | Left and right ankle flexion |
+| `Spine_Bend` | Torso/spine bending |
+| `Pelvis_Offset_Z` | Vertical pelvis translation |
 
-These controls form a foundation for configuring full-body poses and avatar movements.
+These are **rig controls**, not an automated motion-capture or vision-based tracking system.
 
-### 3. Blueprint and Control Rig Implementation
+### 3. How the Control Rig works
 
-**Joint Rotation Control**
+**Joint rotation pipeline**
 
-Implemented a node-based control pipeline that converts joint parameters into bone rotations:
+```text
+Editable joint parameter
+    -> Make Vector
+    -> From Euler
+    -> Set Rotation - Bone
+```
 
-`Joint Parameter → Make Vector → From Euler → Set Rotation - Bone`
+In the graph, a joint parameter supplies a rotation value. `Make Vector` builds a three-component input, `From Euler` converts Euler-angle inputs into a rotation representation, and `Set Rotation - Bone` applies that rotation to the targeted skeletal bone. Separate controls make individual joint pose adjustments possible.
 
-This approach allows joint movements to be adjusted through configurable parameters rather than relying exclusively on predefined animation sequences.
+![Control Rig nodes for lower-body joints](docs/screenshots/joint_control_rig.png)
 
-![Joint Control Rig](docs/screenshots/joint_control_rig.png)
+**Spine bending and pelvis positioning**
 
-**Spine and Pelvis Control**
+```text
+Spine_Bend       -> Make Vector -> From Euler -> Set Rotation - Bone
+Pelvis_Offset_Z  -> Make Vector               -> Set Translation - Bone
+```
 
-Implemented separate controls for upper-body rotation and pelvis translation:
+The spine control modifies bone orientation, while the pelvis control changes the vertical position of a bone. Combining rotation and translation controls provides a basis for configuring different avatar postures, including standing, bending, and seated-pose development.
 
-- `Spine_Bend` controls spinal rotation.
-- `Pelvis_Offset_Z` controls vertical pelvis positioning.
+![Control Rig nodes for spine and pelvis](docs/screenshots/spine_pelvis_control.png)
 
-The Rig Graph uses rotation and translation nodes to support configurable postures.
+## Engineering takeaways
 
-![Spine and Pelvis Control](docs/screenshots/spine_pelvis_control.png)
+- **Scene construction:** translated a physical room layout into a navigable 3D workspace.
+- **Skeletal representation:** worked with bones, skeletal meshes, and rig controls instead of manipulating an avatar as a single rigid object.
+- **Visual programming:** expressed adjustable joint behavior as a connected Control Rig/Blueprint node graph.
+- **System boundaries:** built a reusable virtual-world component intended to interface with, but distinct from, future perception and security-detection systems.
 
-## Research Context
+## Current results and limitations
 
-The broader research investigates ENF-based replay-attack detection and the relationship between virtual and physical environments.
+**Demonstrated here:** Unreal Engine room scene, skeletal avatar placement, and node graphs for joint rotation and pelvis translation.
 
-My work focused on the Unreal Engine environment and avatar framework rather than implementing the ENF detection algorithm itself.
+**Not demonstrated or claimed:** quantitative tracking accuracy, real-time YOLO integration, replay-attack detection results, or a complete end-to-end virtual–physical synchronization pipeline.
 
-## Future Work
+## Future research directions (not implemented in my contribution)
 
-The virtual environment was developed to support subsequent research efforts, including:
+The research team may extend this environment with:
 
-- YOLO-based human detection
-- Human position tracking
-- Integration of tracked movement into the virtual workplace
-- Further virtual-physical synchronization research
+- YOLO-based human detection;
+- position tracking and coordinate mapping into the virtual scene;
+- virtual–physical state synchronization;
+- integration with the broader ENF-based security research workflow.
 
-**Note:** YOLO-based detection and position tracking were planned as future extensions and were not implemented as part of my contribution.
+## Project files and reuse
 
-## Project Scope
-
-This repository documents my contributions to the Unreal Engine virtual environment and avatar control framework. The screenshots demonstrate the environment and Control Rig implementation.
-
-The complete Unreal Engine project and any third-party assets are subject to research-sharing permissions and applicable asset licenses.
+This portfolio currently contains **documentation and screenshots**, not the complete Unreal Engine source project. The full project includes third-party environment assets, so redistributing its asset files requires review of research-sharing permissions and applicable licenses. The complete research handoff is handled separately.
 
 ## Acknowledgments
 
-This project was conducted under the supervision of Professor Yu Chen at Binghamton University as part of the Intelligent and Sustainable Edge Computing (I-SEC) research group.
+Developed during my Research Assistant appointment under **Prof. Yu Chen**, Intelligent and Sustainable Edge Computing (I-SEC), Binghamton University.
